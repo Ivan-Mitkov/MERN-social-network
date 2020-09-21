@@ -1,6 +1,11 @@
 const express = require("express");
 const connectDB = require("./config/db");
+
+
+
 const app = express();
+//Body parser middleware
+app.use(express.json({ extended: false }));
 
 //Route files
 const posts = require("./routes/api/posts");
