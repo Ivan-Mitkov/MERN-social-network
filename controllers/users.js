@@ -2,6 +2,8 @@
 //https://express-validator.github.io/docs/validation-result-api.html
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const User = require("../models/User");
 const { validationResult } = require("express-validator");
 
@@ -35,9 +37,24 @@ exports.registerUser = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     //save user in DB
     await user.save();
-    //Return json webtoken
+    // res.send("User register");
 
-    res.send("User register");
+    //Return json webtoken
+    // https://www.npmjs.com/package/jsonwebtoken
+    //user.id from the saved user
+    const payload = {
+      user: {
+        //mongoose use abstraction so instead _id from mongo get id
+        id: user.id,
+      },
+    };
+    const secret = config.get("jwtsecret");
+    // console.log("secret: ", secret);
+    jwt.sign(payload, secret, { expiresIn: 3600000 }, (err, token) => {
+      if (err) throw new Error(err);
+      //if not error send token to the client
+      res.json({ token });
+    });
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Server Error");
