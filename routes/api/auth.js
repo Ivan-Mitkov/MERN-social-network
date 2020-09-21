@@ -1,10 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../../controllers/auth.js");
+const userValidation = require("../../validations/userValidation");
+const authLoginValidation = require("../../validations/authLoginValidation");
+const usersController = require("../../controllers/users.js");
+
 const auth = require("../../middleware/auth");
 //@route GET api/auth
 //@desk test route
-//@access public
+//@access private
 router.get("/", auth, authController.getAuthenticatedUser);
 
+//@route Post api/auth
+//@desk Login user
+//@access public
+router.post(
+  "/",
+  authLoginValidation.loginUserValidation,
+  authController.loginUser
+);
 module.exports = router;
