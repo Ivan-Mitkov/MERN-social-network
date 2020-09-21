@@ -18,7 +18,8 @@ exports.registerUser = async (req, res) => {
     //see if user exit if exists send error
     let user = await User.findOne({ email: email });
     if (user) {
-      res.status(500).json({ errors: [{ msg: "User already exists" }] });
+      //return for not sending status again later
+      return res.status(500).json({ errors: [{ msg: "User already exists" }] });
     }
     //get user gravatar
     //https://www.npmjs.com/package/gravatar
@@ -30,15 +31,15 @@ exports.registerUser = async (req, res) => {
     user = new User({ name, email, avatar, password });
     //encrypt password
     //https://www.npmjs.com/package/bcryptjs
-    const salt=await bcrypt.genSalt(10)
-    user.password=await bcrypt.hash(password,salt)
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
     //save user in DB
-    await user.save()
+    await user.save();
     //Return json webtoken
 
     res.send("User register");
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 };
