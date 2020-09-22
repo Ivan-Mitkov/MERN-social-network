@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const usersController = require("../../controllers/users.js");
 const userValidation = require("../../validations/userValidation");
 //@route Post api/users
