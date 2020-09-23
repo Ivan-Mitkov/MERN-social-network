@@ -90,3 +90,46 @@ exports.updateOrCreateProfile = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};
+exports.getProfileByUserId = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+    if (!profile) return res.status(400).json({ msg: "Profile not found" });
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    console.dir(error);
+    //if valid id but no user
+    if (error.kind === "ObjectId") {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
+    //if not valid id
+    res.status(500).send("Server error");
+  }
+};
+exports.deleteProfileUserAndPosts = async (req, res) => {
+  try {
+    //@todo remove users posts
+    //remove profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    //remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+    res.json({ msg: "User deleted" });
+  } catch (error) {
+    console.error(error.message);
+
+    //if not valid id
+    res.status(500).send("Server error");
+  }
+};

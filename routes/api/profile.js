@@ -19,5 +19,17 @@ router.post(
   [auth, profileValidation.createOrUpdateValidation],
   profileController.updateOrCreateProfile
 );
+//@route GET api/profile
+//@desk get all profiles
+//@access Public
+router.get('/',profileController.getAllProfiles)
+//@route GET api/profile/user/:user_id
+//@desk get all profiles
+//@access Public
+router.get('/user/:user_id',profileController.getProfileByUserId)
+//@route DELETE api/profile/user/:user_id
+//@desk delete profile, user and post
+//@access Private
+router.delete('/user',auth,profileController.deleteProfileUserAndPosts)
 
 module.exports = router;
