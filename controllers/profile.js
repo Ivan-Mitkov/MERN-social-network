@@ -1,3 +1,5 @@
+const request = require("request");
+const config = require("config");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { check, validationResult } = require("express-validator");
@@ -141,7 +143,7 @@ exports.addExperience = async (req, res) => {
   }
   //if not errors get data from the body
   const { title, company, location, from, to, current, description } = req.body;
-  //create experience array
+  //create experience array with objects
   //dates are M-D-Y
   const newExperience = {
     title,
@@ -155,7 +157,7 @@ exports.addExperience = async (req, res) => {
 
   try {
     //get the user profile
-    const profile =await  Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({ user: req.user.id });
     if (profile) {
       //save the array in the user profile still not in DB
       profile.experience.unshift(newExperience);
@@ -167,6 +169,117 @@ exports.addExperience = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     //if not valid id
+    res.status(500).send("Server error");
+  }
+};
+// @route    DELETE api/profile/experience/:exp_id
+// @desc     Delete experience from profile
+// @access   Private
+exports.deleteExperience = async (req, res) => {
+  try {
+    //find profile
+    const foundProfile = await Profile.findOne({ user: req.user.id });
+    foundProfile.experience = foundProfile.experience.filter(
+      //req.params.exp_id is string so need toString() on exp_id
+      (exp) => exp._id.toString() !== req.params.exp_id
+    );
+    await foundProfile.save();
+    return res.status(200).json(foundProfile);
+  } catch (error) {
+    console.error(error.message);
+
+    //if not valid id
+    res.status(500).send("Server error");
+  }
+};
+
+// @route    PUT api/profile/education
+// @desc     Add profile education
+// @access   Private
+exports.addEductaion = async (req, res) => {
+  //check if errors in the body
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  //if not errors get data from the body
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  } = req.body;
+  //create experience array with objects
+  const newEdu = {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  try {
+    //get the user profile
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (profile) {
+      //save the array in the user profile still not in DB
+      profile.education.unshift(newEdu);
+    }
+    //save profile in DB
+    await profile.save();
+    //return user profile
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    //if not valid id
+    res.status(500).send("Server error");
+  }
+};
+// @route    DELETE api/profile/education/:edu_id
+// @desc     Delete education from profile
+// @access   Private
+exports.deleteEducation = async (req, res) => {
+  try {
+    //find profile
+    const foundProfile = await Profile.findOne({ user: req.user.id });
+    foundProfile.education = foundProfile.education.filter(
+      //req.params.exp_id is string so need toString() on exp_id
+      (edu) => edu._id.toString() !== req.params.edu_id
+    );
+    await foundProfile.save();
+    return res.status(200).json(foundProfile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};
+
+exports.getUserHithubRepos = async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        "githubClientID"
+      )}&client_secret=${config.get("guthubSecret")}`,
+      method: "GET",
+      headers: { "user-agent": "node.js" },
+    };
+
+    request(options, (error, response, body) => {
+      if (error) console.error(error);
+      if (res.statusCode !== 200) {
+        res.status(400).json({ msg: "No github profile found" });
+      }
+      return res.json(JSON.parse(body));
+    });
+  } catch (error) {
+    console.error(error.message);
     res.status(500).send("Server error");
   }
 };
