@@ -133,3 +133,40 @@ exports.deleteProfileUserAndPosts = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+exports.addExperience = async (req, res) => {
+  //check if errors in the body
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  //if not errors get data from the body
+  const { title, company, location, from, to, current, description } = req.body;
+  //create experience array
+  //dates are M-D-Y
+  const newExperience = {
+    title,
+    company,
+    location,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  try {
+    //get the user profile
+    const profile =await  Profile.findOne({ user: req.user.id });
+    if (profile) {
+      //save the array in the user profile still not in DB
+      profile.experience.unshift(newExperience);
+    }
+    //save profile in DB
+    await profile.save();
+    //return user profile
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    //if not valid id
+    res.status(500).send("Server error");
+  }
+};
