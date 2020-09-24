@@ -76,7 +76,7 @@ exports.deletePostById = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req.params.id);
     const post = await Post.findById(id);
-   
+
     //check if user own the post
     //post.user is ObjectId
     if (post.user.toString() !== req.user.id) {
@@ -89,6 +89,57 @@ exports.deletePostById = async (req, res) => {
     res.json({ msg: "post deleted" });
   } catch (error) {
     console.error(error.message);
+    return res.status(500).send("Server error");
+  }
+};
+//@route PUT api/posts/like/:id
+//@desk like a post
+//@access private
+exports.likePost = async (req, res) => {
+  try {
+    const id = mongoose.Types.ObjectId(req.params.id);
+    const post = await Post.findById(id);
+    // console.log(post);
+    //check if post has already been liked by this user
+    if (
+      post.likes.filter((like) => like.user.toString() === req.user.id).length >
+      0
+    ) {
+      return res.status(400).json({ msg: "Post already liked" });
+    }
+    //if its not liked push new like
+    post.likes.unshift({ user: req.user.id });
+    //save to DB
+    await post.save();
+    res.json(post.likes);
+  } catch (error) {
+    console.error("Like error: ", error.message);
+    return res.status(500).send("Server error");
+  }
+};
+//@route PUT api/posts/like/:id
+//@desk unlike a post
+//@access private
+exports.unLikePost = async (req, res) => {
+  try {
+    const id = mongoose.Types.ObjectId(req.params.id);
+    const post = await Post.findById(id);
+    // Check if the post has not yet been liked
+    if (
+      post.likes.filter((like) => like.user.toString() === req.user.id)
+        .length === 0
+    ) {
+      return res.status(400).json({ msg: "Post is not yet liked" });
+    }
+    const newlikes = post.likes.filter(
+      (like) => like.user.toString() !== req.user.id
+    );
+    post.likes = newlikes;
+    //save to DB
+    await post.save();
+    res.json(post.likes);
+  } catch (error) {
+    console.error("unLike error: ", error.message);
     return res.status(500).send("Server error");
   }
 };

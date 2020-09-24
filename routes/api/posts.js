@@ -29,5 +29,21 @@ router.delete(
   [auth, mongooseChecks.checkObjectId("id")],
   postsController.deletePostById
 );
+//@route PUT api/posts/like:id
+//@desk like a post
+//@access private
+router.put(
+  "/like/:id",
+  [auth, mongooseChecks.checkObjectId("id")],
+  postsController.likePost
+);
+//@route PUT api/posts/like:id
+//@desk unlike a post
+//@access private
+router.put(
+  "/unlike/:id",
+  [auth, mongooseChecks.checkObjectId("id")],
+  postsController.unLikePost
+);
 
 module.exports = router;
