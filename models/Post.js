@@ -5,6 +5,7 @@ const PostSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
   },
+  //not deleting post if user delete it's profile
   text: {
     type: String,
     required: true,
