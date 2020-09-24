@@ -45,5 +45,24 @@ router.put(
   [auth, mongooseChecks.checkObjectId("id")],
   postsController.unLikePost
 );
-
+//@route POST api/posts/comment/:id
+//@desk Create a post comment
+//@access private
+router.post(
+  "/comment/:id",
+  [auth, mongooseChecks.checkObjectId("id"), postValidation.checkPost],
+  postsController.createPostComment
+);
+//@route DELETE api/posts/comment/:id/:comment_id
+//@desk Delete a post comment
+//@access private
+router.delete(
+  "/comment/:id/:comment_id",
+  [
+    auth,
+    mongooseChecks.checkObjectId("id"),
+    mongooseChecks.checkObjectId("comment_id"),
+  ],
+  postsController.deletePostComment
+);
 module.exports = router;

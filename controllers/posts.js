@@ -143,3 +143,64 @@ exports.unLikePost = async (req, res) => {
     return res.status(500).send("Server error");
   }
 };
+
+//@route POST api/posts/comment/:id
+//@desk Create a post comment
+//@access private
+exports.createPostComment = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    //find logged in user
+    const user = await User.findById(req.user.id).select("-password");
+    const post = await Post.findById(req.params.id);
+    //create new post object from request
+    const newPostComment = {
+      text: req.body.text,
+      name: user.name,
+      avatar: user.avatar,
+      user: req.user.id,
+    };
+    post.comments.unshift(newPostComment);
+    // save post object in DB
+    await Post(post).save();
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};
+//@route DELETE api/posts/comment/:id/:comment_id
+//@desk Delete a post comment
+//@access private
+exports.deletePostComment = async (req, res) => {
+  try {
+    //find logged in user
+    const post = await Post.findById(req.params.id);
+    const comment = post.comments.find(
+      (comment) => comment._id.toString() === req.params.comment_id
+    );
+    if (!comment) {
+      return res.status(404).json({ msg: "Comment does not exists" });
+    }
+    // console.log(comment)
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "You can not delete this comment" });
+    }
+
+    const newcomments = post.comments.filter(
+      (comment) => comment._id.toString() !== req.params.comment_id
+    );
+    // console.log(newcomments);
+    post.comments = newcomments;
+    // save post object in DB
+    await Post(post).save();
+    res.json(post.comments);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};
