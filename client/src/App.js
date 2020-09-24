@@ -1,8 +1,15 @@
 import React from "react";
+import Landing from "./components/layout/Landing";
+import Navbar from "./components/layout/Navbar";
 import "./App.css";
 
 function App() {
-  return <div>App</div>;
+  return (
+    <>
+      <Navbar />
+      <Landing />
+    </>
+  );
 }
 
 export default App;
