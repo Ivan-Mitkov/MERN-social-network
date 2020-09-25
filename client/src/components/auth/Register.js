@@ -23,27 +23,27 @@ const Register = () => {
     } else {
       console.log("Match", password);
       console.log("formData", formData);
-      const newUser = {
-        name,
-        email,
-        password,
-      };
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const body = JSON.stringify(newUser);
-        //@route Post api/users
-        //@desk Register user route
-        //@access public
-        //added a proxy in package.json so can do just /api/user
-        const res = await axios.post("/api/users",body,config);
-        console.log('res.data', res.data)
-      } catch (error) {
-        console.log('error', error.message)
-      }
+      // const newUser = {
+      //   name,
+      //   email,
+      //   password,
+      // };
+      // try {
+      //   const config = {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   };
+      //   const body = JSON.stringify(newUser);
+      //   //@route Post api/users
+      //   //@desk Register user route
+      //   //@access public
+      //   //added a proxy in package.json so can do just /api/user
+      //   const res = await axios.post("/api/users",body,config);
+      //   console.log('res.data', res.data)
+      // } catch (error) {
+      //   console.log('error', error.message)
+      // }
     }
   };
   return (
@@ -99,7 +99,7 @@ const Register = () => {
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <Link to="login">Sign In</Link>
+        Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </>
   );
