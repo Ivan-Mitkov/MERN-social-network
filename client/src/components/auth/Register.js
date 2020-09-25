@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
 
 import axios from "axios";
 const Register = () => {
@@ -29,8 +30,8 @@ const Register = () => {
       console.log("Not match", password, password2);
       dispatch(setAlert("Passwort don'match", "danger",2000));
     } else {
-      console.log("Match", password);
-      console.log("formData", formData);
+      // console.log("Match", password);
+      // console.log("formData", formData);
       // const newUser = {
       //   name,
       //   email,
@@ -52,6 +53,7 @@ const Register = () => {
       // } catch (error) {
       //   console.log('error', error.message)
       // }
+      dispatch(register({name,email,password}))
     }
   };
   return (
