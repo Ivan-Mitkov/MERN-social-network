@@ -16,13 +16,34 @@ const Register = () => {
     });
   };
   // console.log("state", formData);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Not match", password, password2);
     } else {
       console.log("Match", password);
       console.log("formData", formData);
+      const newUser = {
+        name,
+        email,
+        password,
+      };
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const body = JSON.stringify(newUser);
+        //@route Post api/users
+        //@desk Register user route
+        //@access public
+        //added a proxy in package.json so can do just /api/user
+        const res = await axios.post("/api/users",body,config);
+        console.log('res.data', res.data)
+      } catch (error) {
+        console.log('error', error.message)
+      }
     }
   };
   return (
