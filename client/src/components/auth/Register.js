@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { setAlert } from "../../actions/alert";
+
 import axios from "axios";
 const Register = () => {
+  //using useDispatch instead connect from redux
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,6 +27,7 @@ const Register = () => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Not match", password, password2);
+      dispatch(setAlert("Passwort don'match", "danger",2000));
     } else {
       console.log("Match", password);
       console.log("formData", formData);
