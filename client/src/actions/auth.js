@@ -12,6 +12,8 @@ export const register = ({ name, email, password }) => async (dispatch) => {
   const body = JSON.stringify({ name, email, password });
   try {
     const res = await axios.post("/api/users", body, config);
+    localStorage.setItem("token", res.data);
+
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
@@ -29,6 +31,8 @@ export const register = ({ name, email, password }) => async (dispatch) => {
       // console.log(errors);
       errors.forEach((err) => dispatch(setAlert(err.msg, "danger")));
     }
+    localStorage.removeItem("token");
+
     dispatch({
       type: REGISTER_FAIL,
     });
