@@ -8,10 +8,20 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alerts from "./components/layout/Alert";
 import "./App.css";
-
+import { loadUser } from "./actions/auth";
+import setAuthToken from "./utils/setAuthToken";
 
 function App() {
- 
+  React.useEffect(() => {
+    // check for token in LS
+    
+    const token=localStorage.getItem('token')
+
+    if (token) {
+      setAuthToken(token);
+    }
+    store.dispatch(loadUser());
+  }, []);
 
   return (
     <Provider store={store}>
