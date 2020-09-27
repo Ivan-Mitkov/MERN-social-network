@@ -7,6 +7,7 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  LOGOUT,
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 //check if user is autenticated and load user
@@ -94,4 +95,11 @@ export const login = (email, password) => async (dispatch) => {
       type: LOGIN_FAIL,
     });
   }
+};
+
+//Logout user
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("token");
+  dispatch({ type: LOGOUT });
+  // dispatch(loadUser());
 };
