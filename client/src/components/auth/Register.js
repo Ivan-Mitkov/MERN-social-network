@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Redirect, Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
 
-import axios from "axios";
 const Register = () => {
   //using useDispatch instead connect from redux
   const dispatch = useDispatch();
@@ -17,6 +17,8 @@ const Register = () => {
     password2: "",
   });
   const { name, email, password, password2 } = formData;
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const formHandler = (e) => {
     setFormData({
       ...formData,
@@ -28,34 +30,15 @@ const Register = () => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Not match", password, password2);
-      dispatch(setAlert("Passwort don'match", "danger",2000));
+      dispatch(setAlert("Passwort don'match", "danger", 2000));
     } else {
-      // console.log("Match", password);
-      // console.log("formData", formData);
-      // const newUser = {
-      //   name,
-      //   email,
-      //   password,
-      // };
-      // try {
-      //   const config = {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   };
-      //   const body = JSON.stringify(newUser);
-      //   //@route Post api/users
-      //   //@desk Register user route
-      //   //@access public
-      //   //added a proxy in package.json so can do just /api/user
-      //   const res = await axios.post("/api/users",body,config);
-      //   console.log('res.data', res.data)
-      // } catch (error) {
-      //   console.log('error', error.message)
-      // }
-      dispatch(register({name,email,password}))
+      dispatch(register({ name, email, password }));
     }
   };
+  //Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <>
       <h1 className="large text-primary">Sign Up</h1>
