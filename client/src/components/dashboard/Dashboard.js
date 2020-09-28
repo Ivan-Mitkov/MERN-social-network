@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector, shallowEqual } from "react-redux";
 import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
-
+import DashboardActions from "./DashboardActions";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.profile, shallowEqual);
@@ -27,7 +27,9 @@ const Dashboard = () => {
           <i className="fas fa-user"></i> Welcome {user && user.name}
         </p>
         {profile !== null ? (
-          <>has</>
+          <>
+            <DashboardActions />
+          </>
         ) : (
           <>
             <p>You have not yet set up a profile </p>

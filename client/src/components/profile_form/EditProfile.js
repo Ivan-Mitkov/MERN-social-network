@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
@@ -17,13 +17,28 @@ const initialState = {
   youtube: "",
   instagram: "",
 };
-const CreateProfile = (props) => {
+const EditProfile = (props) => {
   const { history } = props;
-  const profile = useSelector((state) => state.profile, shallowEqual);
+  const profileState = useSelector((state) => state.profile, shallowEqual);
+  const { profile, loading } = profileState;
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialState);
-
+  useEffect(() => {
+    if (!profile) dispatch(getCurrentProfile());
+    if (!loading && profile) {
+      const profileData = { ...initialState };
+      for (const key in profile) {
+        if (key in profileData) profileData[key] = profile[key];
+      }
+      for (const key in profile.social) {
+        if (key in profileData) profileData[key] = profile.social[key];
+      }
+      if (Array.isArray(profileData.skills))
+        profileData.skills = profileData.skills.join(", ");
+      setFormData(profileData);
+    }
+  }, [loading, getCurrentProfile, profile]);
   const {
     company,
     website,
@@ -43,7 +58,7 @@ const CreateProfile = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(createProfile(formData, history, true));
+    dispatch(createProfile(formData, history, false));
   };
 
   return (
@@ -220,4 +235,4 @@ const CreateProfile = (props) => {
   );
 };
 
-export default withRouter(CreateProfile);
+export default withRouter(EditProfile);

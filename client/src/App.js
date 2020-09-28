@@ -13,6 +13,7 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import "./App.css";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
+import EditProfile from "./components/profile_form/EditProfile";
 
 function App() {
   React.useEffect(() => {
@@ -45,6 +46,11 @@ function App() {
               exact
               path="/create_profile"
               component={CreateProfile}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/edit_profile"
+              component={EditProfile}
             ></PrivateRoute>
           </Switch>
         </section>
