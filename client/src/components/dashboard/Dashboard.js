@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector, shallowEqual } from "react-redux";
 import { getCurrentProfile } from "../../actions/profile";
+import { deleteAccount } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
 import DashboardActions from "./DashboardActions";
+import Experience from "./Experience";
+import Education from "./Education";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.profile, shallowEqual);
@@ -16,7 +20,10 @@ const Dashboard = () => {
   // console.log(authState);
   const { profile, loading } = profileState;
   const { user } = authState;
-  console.log(profile);
+  // console.log(profile);
+  const handleDeleteAccount = () => {
+    dispatch(deleteAccount());
+  };
   return loading && profile === null ? (
     <Spinner />
   ) : (
@@ -29,6 +36,13 @@ const Dashboard = () => {
         {profile !== null ? (
           <>
             <DashboardActions />
+            <Experience experience={profile.experience} />
+            <Education education={profile.education} />
+            <div className="my-2">
+              <button className="btn btn-danger" onClick={handleDeleteAccount}>
+                <i className="fas fa-user"></i>  Delete my account
+              </button>
+            </div>
           </>
         ) : (
           <>

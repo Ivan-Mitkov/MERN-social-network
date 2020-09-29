@@ -14,6 +14,8 @@ import "./App.css";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 import EditProfile from "./components/profile_form/EditProfile";
+import AddEducation from "./components/profile_form/AddEducation";
+import AddExperience from "./components/profile_form/AddExperience";
 
 function App() {
   React.useEffect(() => {
@@ -51,6 +53,16 @@ function App() {
               exact
               path="/edit_profile"
               component={EditProfile}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/add_experience"
+              component={AddExperience}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/add_education"
+              component={AddEducation}
             ></PrivateRoute>
           </Switch>
         </section>
