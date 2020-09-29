@@ -15,7 +15,7 @@ const Alert = () => {
   // const alerts = useSelector(selectAlert);
   const alerts = useSelector(state=>state.alert);
 
-  console.log(alerts);
+  // console.log(alerts);
   const alertComponent = alerts
     ? alerts.map((alert) => {
         return (

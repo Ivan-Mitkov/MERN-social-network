@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { createProfile, getCurrentProfile } from "../../actions/profile";
+import { useDispatch } from "react-redux";
+import { createProfile } from "../../actions/profile";
 
 const initialState = {
   company: "",
@@ -19,7 +19,7 @@ const initialState = {
 };
 const CreateProfile = (props) => {
   const { history } = props;
-  const profile = useSelector((state) => state.profile, shallowEqual);
+  // const profile = useSelector((state) => state.profile, shallowEqual);
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialState);

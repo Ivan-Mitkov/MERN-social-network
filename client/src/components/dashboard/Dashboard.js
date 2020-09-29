@@ -15,6 +15,7 @@ const Dashboard = () => {
   const authState = useSelector((state) => state.auth, shallowEqual);
   React.useEffect(() => {
     dispatch(getCurrentProfile());
+    // eslint-disable-next-line
   }, []);
   // console.log(profileState);
   // console.log(authState);
@@ -40,7 +41,7 @@ const Dashboard = () => {
             <Education education={profile.education} />
             <div className="my-2">
               <button className="btn btn-danger" onClick={handleDeleteAccount}>
-                <i className="fas fa-user"></i>  Delete my account
+                <i className="fas fa-user"></i> Delete my account
               </button>
             </div>
           </>

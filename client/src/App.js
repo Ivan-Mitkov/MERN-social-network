@@ -16,13 +16,13 @@ import setAuthToken from "./utils/setAuthToken";
 import EditProfile from "./components/profile_form/EditProfile";
 import AddEducation from "./components/profile_form/AddEducation";
 import AddExperience from "./components/profile_form/AddExperience";
+import Profiles from "./components/profiles/Profiles";
 
 function App() {
   React.useEffect(() => {
     // check for token in LS
 
     const token = localStorage.getItem("token");
-
     if (token) {
       setAuthToken(token);
     }
@@ -39,6 +39,7 @@ function App() {
           <Switch>
             <Route exact path="/register" component={Register}></Route>
             <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/profiles" component={Profiles}></Route>
             <PrivateRoute
               exact
               path="/dashboard"

@@ -38,6 +38,7 @@ const EditProfile = (props) => {
         profileData.skills = profileData.skills.join(", ");
       setFormData(profileData);
     }
+    // eslint-disable-next-line
   }, [loading, getCurrentProfile, profile]);
   const {
     company,

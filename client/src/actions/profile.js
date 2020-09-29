@@ -6,6 +6,8 @@ import {
   PROFILE_ERROR,
   UPDATE_PROFILE,
   DELETE_ACCOUNT,
+  GET_PROFILES,
+  GET_REPOS,
 } from "./types";
 
 //Get current user profile
@@ -15,6 +17,56 @@ export const getCurrentProfile = () => async (dispatch) => {
     const res = await axios.get("/api/profile/me");
     // console.log(res)
     dispatch({ type: GET_PROFILE, payload: res.data });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+//Get all profiles
+export const getAllProfiles = () => async (dispatch) => {
+  //clear user profile
+  dispatch({ type: CLEAR_PROFILE });
+  //get all profiles
+  try {
+    const res = await axios.get("/api/profile/");
+    dispatch({ type: GET_PROFILES, payload: res.data });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+//Get  profile by id
+export const getProfileById = (user_id) => async (dispatch) => {
+  //get all profiles
+  try {
+    const res = await axios.get(`/api/profile/user/${user_id}`);
+    dispatch({ type: GET_PROFILE, payload: res.data });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+//Get guthub repos
+export const getGithubRepos = (github_username) => async (dispatch) => {
+  //get all profiles
+  try {
+    const res = await axios.get(`/api/profile/github/${github_username}`);
+    dispatch({ type: GET_REPOS, payload: res.data });
   } catch (error) {
     dispatch({
       type: PROFILE_ERROR,
@@ -151,7 +203,7 @@ export const deleteAccount = () => async (dispatch) => {
     localStorage.removeItem("token");
 
     try {
-      const res = await axios.delete(`/api/profile/user`);
+      await axios.delete(`/api/profile/user`);
       dispatch({ type: CLEAR_PROFILE });
       dispatch({ type: DELETE_ACCOUNT });
       dispatch(setAlert("Account Deleted"));
