@@ -18,6 +18,7 @@ import AddEducation from "./components/profile_form/AddEducation";
 import AddExperience from "./components/profile_form/AddExperience";
 import Profiles from "./components/profiles/Profiles";
 import Profile from './components/profile/Profile'
+import Posts from './components/posts/Posts'
 function App() {
   React.useEffect(() => {
     // check for token in LS
@@ -65,6 +66,11 @@ function App() {
               exact
               path="/add_education"
               component={AddEducation}
+            ></PrivateRoute>
+            <PrivateRoute
+              exact
+              path="/posts"
+              component={Posts}
             ></PrivateRoute>
           </Switch>
         </section>

@@ -24,6 +24,9 @@ const Navbar = () => {
         <Link to="/profiles">Developers</Link>
       </li>
       <li>
+        <Link to="/posts">Posts</Link>
+      </li>
+      <li>
         <Link onClick={handleLogout} to="#!">
           <i className="fas fa-sign-out-alt"></i>{" "}
           <span className="hide-sm">Logout</span>
