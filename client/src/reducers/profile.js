@@ -50,6 +50,7 @@ export default function (state = initialState, action) {
         ...state,
         error: payload,
         loading: false,
+        profile: null,
       };
     default:
       return state;
