@@ -117,7 +117,7 @@ exports.likePost = async (req, res) => {
     return res.status(500).send("Server error");
   }
 };
-//@route PUT api/posts/like/:id
+//@route PUT api/posts/unlike/:id
 //@desk unlike a post
 //@access private
 exports.unLikePost = async (req, res) => {

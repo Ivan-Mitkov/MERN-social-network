@@ -37,7 +37,7 @@ router.put(
   [auth, mongooseChecks.checkObjectId("id")],
   postsController.likePost
 );
-//@route PUT api/posts/like:id
+//@route PUT api/posts/unlike:id
 //@desk unlike a post
 //@access private
 router.put(
