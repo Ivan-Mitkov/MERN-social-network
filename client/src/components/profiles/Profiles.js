@@ -11,8 +11,10 @@ const Profiles = () => {
 
   useEffect(() => {
     dispatch(getAllProfiles());
+    console.log('Use effect profiles')
+
     // eslint-disable-next-line
-  }, []);
+  }, [loading]);
   return (
     <>
       {loading ? (

@@ -1,13 +1,13 @@
-import React, { useEffect,Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import Spinner from "../layout/Spinner";
 import { getProfileById } from "../../actions/profile";
-import ProfileAbout from './ProfileAbout'
-import ProfileEducation from './ProfileEducation'
-import ProfileExperience from './ProfileExperience'
-import ProfileGithub from './ProfileGithub'
-import ProfileTop from './ProfileTop'
+import ProfileAbout from "./ProfileAbout";
+import ProfileEducation from "./ProfileEducation";
+import ProfileExperience from "./ProfileExperience";
+import ProfileGithub from "./ProfileGithub";
+import ProfileTop from "./ProfileTop";
 
 const Profile = ({ match }) => {
   const dispatch = useDispatch();
@@ -17,10 +17,11 @@ const Profile = ({ match }) => {
   useEffect(() => {
     dispatch(getProfileById(match.params.id));
     console.log("Use effect Profile");
+    //eslint-disable-next-line
   }, [getProfileById, match.params.id]);
   // console.log(auth);
 
-  const {profile}=profileState;
+  const { profile } = profileState;
   const isProfileOfLoggedInUser = () => {
     return (
       auth.isAuthenticated &&

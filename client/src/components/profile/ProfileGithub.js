@@ -7,6 +7,7 @@ const ProfileGithub = ({ username }) => {
   const repos = useSelector((state) => state.profile.repos);
   useEffect(() => {
     dispatch(getGithubRepos(username));
+   // eslint-disable-next-line
   }, [getGithubRepos, username]);
 
   return (

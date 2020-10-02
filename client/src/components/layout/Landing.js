@@ -1,8 +1,11 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 const Landing = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state) => state.auth.isAuthenticated,
+    shallowEqual
+  );
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }

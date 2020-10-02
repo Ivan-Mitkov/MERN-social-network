@@ -17,18 +17,19 @@ import EditProfile from "./components/profile_form/EditProfile";
 import AddEducation from "./components/profile_form/AddEducation";
 import AddExperience from "./components/profile_form/AddExperience";
 import Profiles from "./components/profiles/Profiles";
-import Profile from './components/profile/Profile'
-import Posts from './components/posts/Posts'
+import Profile from "./components/profile/Profile";
+import Posts from "./components/posts/Posts";
+
 function App() {
   React.useEffect(() => {
     // check for token in LS
-
     const token = localStorage.getItem("token");
     if (token) {
       setAuthToken(token);
     }
     store.dispatch(loadUser());
-  }, []);
+    console.log("App use effect");
+  }, [loadUser]);
 
   return (
     <Provider store={store}>
@@ -67,11 +68,7 @@ function App() {
               path="/add_education"
               component={AddEducation}
             ></PrivateRoute>
-            <PrivateRoute
-              exact
-              path="/posts"
-              component={Posts}
-            ></PrivateRoute>
+            <PrivateRoute exact path="/posts" component={Posts}></PrivateRoute>
           </Switch>
         </section>
       </Router>

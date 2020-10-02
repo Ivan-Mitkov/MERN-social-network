@@ -13,14 +13,16 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.profile, shallowEqual);
   const authState = useSelector((state) => state.auth, shallowEqual);
-  React.useEffect(() => {
-    dispatch(getCurrentProfile());
-    // eslint-disable-next-line
-  }, []);
-  // console.log(profileState);
-  // console.log(authState);
   const { profile, loading } = profileState;
   const { user } = authState;
+  React.useEffect(() => {
+    dispatch(getCurrentProfile());
+    console.log('Use effect dashboarrd')
+    // eslint-disable-next-line
+  }, [loading]);
+  // console.log(profileState);
+  // console.log(authState);
+  
   // console.log(profile);
   const handleDeleteAccount = () => {
     dispatch(deleteAccount());
