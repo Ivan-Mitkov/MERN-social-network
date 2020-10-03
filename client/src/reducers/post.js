@@ -18,7 +18,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
-  console.log(state);
+  // console.log(state);
   switch (type) {
     case GET_POSTS:
       return {
@@ -75,9 +75,14 @@ export default function (state = initialState, action) {
       };
 
     case REMOVE_COMMENT:
+      //payload is comments id
+      console.log('remove',payload)
       return {
         ...state,
-        post: state.post.comments.filter((comment) => comment._id !== payload),
+        post: {
+          ...state.post,
+          comments: state.post.comments.filter((comment) => comment._id !== payload),
+        },
         posts: state.posts.map((post) => {
           if (post._id === state.post._id) {
             return {
