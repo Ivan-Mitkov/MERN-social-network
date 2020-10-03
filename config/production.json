@@ -1,6 +1,0 @@
-{
-  "mongoUri": "mongodb+srv://ivan-mitkov:392781@cluster0.fjwpb.mongodb.net/dev-connect?retryWrites=true&w=majority",
-  "jwtsecret": "jhkdhjdshdsh",
-  "githubClientID": "9831000e26baff6042f9",
-  "guthubSecret": "65dcf9ac61d11ba29ab55bd37dd3c443c0b7867a"
-}
