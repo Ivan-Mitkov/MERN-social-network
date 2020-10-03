@@ -2,6 +2,7 @@ import axios from "axios";
 import { setAlert } from "./alert";
 import {
   GET_POSTS,
+  GET_POST,
   POST_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
@@ -26,13 +27,30 @@ export const getPosts = () => async (dispatch) => {
     });
   }
 };
+//@route GET api/posts/:id
+
+export const getPost = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/posts/${id}`);
+    // console.log(res);
+    dispatch({ type: GET_POST, payload: res.data });
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
 //PUT api/posts/like/:id
 //@route GET api/posts
 
 export const addLikes = (postId) => async (dispatch) => {
   try {
     const res = await axios.put(`/api/posts/like/${postId}`);
-    console.log(res);
+    // console.log(res);
     dispatch({ type: UPDATE_LIKES, payload: { id: postId, likes: res.data } });
   } catch (error) {
     dispatch({

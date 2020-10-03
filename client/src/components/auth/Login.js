@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { login } from "../../actions/auth";
 
@@ -9,7 +9,10 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state) => state.auth.isAuthenticated,
+    shallowEqual
+  );
 
   const dispatch = useDispatch();
 
@@ -20,6 +23,10 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+  // check on every refresh
+  // useEffect(() => {
+  //   dispatch(login(email, password));
+  // }, []);
   // console.log("state", formData);
   const handleSubmit = async (e) => {
     e.preventDefault();

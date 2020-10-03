@@ -1,5 +1,6 @@
 import {
   GET_POSTS,
+  GET_POST,
   POST_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
@@ -22,6 +23,12 @@ export default function (state = initialState, action) {
         posts: payload,
         loading: false,
       };
+    case GET_POST:
+      return {
+        ...state,
+        post: payload,
+        loading: false,
+      };
 
     case ADD_POST:
       return {
@@ -30,11 +37,13 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case UPDATE_LIKES:
+     
       return {
         ...state,
         posts: state.posts.map((post) =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
+        post: { ...state.post, likes: payload.likes },
         loading: false,
       };
     case DELETE_POST:

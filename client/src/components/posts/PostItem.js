@@ -1,23 +1,30 @@
-import React from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { addLikes, removeLikes, deletePost } from "../../actions/post";
 
 const PostItem = ({
+  addLikes,
+  removeLikes,
+  deletePost,
+  auth,
   post: { _id, text, name, avatar, user, likes, comments, date },
+  showActions,
 }) => {
-  const dispatch = useDispatch();
-  const authState = useSelector((state) => state.auth);
   const handleLike = () => {
-    dispatch(addLikes(_id));
+    addLikes(_id);
   };
   const handleUnlike = () => {
-    dispatch(removeLikes(_id));
+    removeLikes(_id);
   };
   const handleDelete = () => {
-    dispatch(deletePost(_id));
+    deletePost(_id);
   };
+  // useEffect(() => {
+  //   console.log("Post item use effect");
+  // }, [addLikes, removeLikes, deletePost]);
+
   // const{user,loading}=authState
   return (
     <div className="post bg-white p-1 my-1">
@@ -39,24 +46,32 @@ const PostItem = ({
         <button onClick={handleUnlike} type="button" className="btn btn-light">
           <i className="fas fa-thumbs-down"></i>
         </button>
-        <Link to={`/post/${_id}`} className="btn btn-primary">
-          Discussion{" "}
-          {comments.length > 0 && (
-            <span className="comment-count">{comments.length}</span>
-          )}
-        </Link>
-        {!authState.loading && user === authState.user._id && (
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={handleDelete}
-          >
-            <i className="fas fa-times"></i>
-          </button>
+        {showActions && (
+          <Fragment>
+            <Link to={`/posts/${_id}`} className="btn btn-primary">
+              Discussion{" "}
+              {comments.length > 0 && (
+                <span className="comment-count">{comments.length}</span>
+              )}
+            </Link>
+            {!auth.loading && user === auth.user._id && (
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={handleDelete}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            )}
+          </Fragment>
         )}
       </div>
     </div>
   );
 };
-
-export default PostItem;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+export default connect(mapStateToProps, { addLikes, removeLikes, deletePost })(
+  PostItem
+);
