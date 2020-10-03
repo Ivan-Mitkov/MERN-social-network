@@ -7,6 +7,8 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
 } from "./types";
 
 //Get posts
@@ -109,6 +111,55 @@ export const addPost = (formData) => async (dispatch) => {
     //send id so to wnow how to filter into reducer
     dispatch({ type: ADD_POST, payload: res.data });
     dispatch(setAlert("Post added", "success"));
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+//@route POST api/posts/comment/:id
+export const addComment = (postId, formData) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const res = await axios.post(
+      `/api/posts/comment/${postId}`,
+      formData,
+      config
+    );
+    console.log(res.data);
+    //send id so to wnow how to filter into reducer
+    dispatch({ type: ADD_COMMENT, payload: res.data });
+    dispatch(setAlert("Comment added", "success"));
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+//@route DELETE api/posts/comment/:id/:comment_id
+export const removeComment = (postId, commentId) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
+    // console.log(res);
+    //send id so to wnow how to filter into reducer
+    dispatch({
+      type: REMOVE_COMMENT,
+      payload: commentId,
+    });
+    dispatch(setAlert("Comment deleted", "success"));
   } catch (error) {
     dispatch({
       type: POST_ERROR,
